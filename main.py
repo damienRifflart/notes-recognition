@@ -2,9 +2,11 @@ import sounddevice as sd
 import numpy as np
 import math
 
-sample_rate = 44100  # fréquence d'échantillonnage
-duration = 15  # durée de l'enregistrement en secondes
+sample_rate = 33000  # fréquence d'échantillonnage
+duration = 2  # durée de l'enregistrement en secondes
 block_size = 4096  # taille du bloc pour une meilleure résolution
+
+notes = []
 
 # wikipedia: https://en.wikipedia.org/wiki/Piano_key_frequencies
 def freq_to_note(freq):
@@ -72,7 +74,7 @@ def process_audio(indata, frames, time, status):
 
             if signal_to_noise > 10:
                 print(f"Fréquence: {peak_freq:.1f} Hz.")
-                print(f"Note: {freq_to_note(peak_freq)}.")
+                notes.append(freq_to_note(peak_freq))
 
 print("Enregistrement en cours...")
 
@@ -81,3 +83,4 @@ with sd.InputStream(samplerate=sample_rate, blocksize=block_size, callback=proce
     sd.sleep(duration * 1000)
 
 print("Enregistrement terminé.")
+print(notes)
